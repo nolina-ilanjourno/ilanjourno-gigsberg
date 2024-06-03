@@ -23,14 +23,17 @@ class UsersController {
     public function show(int $id) {
         header('Content-Type: application/json');
         if ($user = $this->userModel->getUserById($id)) {
+            http_response_code(200);
             echo json_encode($user);
-            exit(200);
+            
         } else {
+            http_response_code(400);
             echo json_encode([
                 'errors' => ['User not found.']
             ]);
-            exit(400);
         }
+
+        exit();
     }
 
     public function create() {
@@ -73,11 +76,13 @@ class UsersController {
     public function destroy(int $id) {
         if (!$this->userModel->deleteUser($id)) {
             header('Content-Type: application/json');
+            http_response_code(400);
             echo json_encode([
                 'errors' => ['Failed to delete user.']
             ]);
-            exit();
         }
+
+        exit();
     }
 
 }
